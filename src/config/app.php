@@ -7,7 +7,7 @@ return [
     'name' => env('APP_NAME', '権田原佃煮店'),
     'env' => env('APP_ENV', 'production'),
     'debug' => (bool) env('APP_DEBUG', true),
-    'url' => env('APP_URL', 'http://localhost:8080'),
+    'url' => env('APP_URL', 'http://localhost:9080'),
     'asset_url' => env('ASSET_URL'),
     'timezone' => 'Asia/Tokyo',
     'locale' => 'ja',

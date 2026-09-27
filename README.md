@@ -57,8 +57,8 @@ docker compose exec app php artisan migrate:fresh --seed
 ```
 
 ### 3. ブラウザでアクセス
-* **権田原佃煮店 ECサイト**: [http://localhost:8080](http://localhost:8080)
-* **Mailpit (テストメール受信BOX)**: [http://localhost:8025](http://localhost:8025)
+* **権田原佃煮店 ECサイト**: [http://localhost:9080](http://localhost:9080)
+* **Mailpit (テストメール受信BOX)**: [http://localhost:9025](http://localhost:9025)
 * **Swagger風APIドキュメント**: `docs/api/index.html` をブラウザで直接開く
 * **【顧客提示用】HTMLスライド**: `docs/planning/presentation.html` をブラウザで開く
 * **【社内検討用】HTMLスライド**: `docs/planning/internal_presentation.html` をブラウザで開く
@@ -78,7 +78,7 @@ docker compose exec app php artisan migrate:fresh --seed
 2. 実際のコード（`GondawaraShopController.php`）を検証させ、「仕様書に書いてある設計が、現場のコードでどれだけ無視されているか」を洗い出させる。
 
 ### 演習C: バグバウンティ & セキュリティ診断演習（所要時間: 120分）
-1. サイト（`http://localhost:8080`）を操作し、脆弱性・業務不具合を発見・レポートさせる。
+1. サイト（`http://localhost:9080`）を操作し、脆弱性・業務不具合を発見・レポートさせる。
    * 数量マイナス入力による返金購入
    * 生SQL結合によるSQLインジェクション
    * レビュー欄のStored XSS

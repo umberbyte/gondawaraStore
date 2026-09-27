@@ -15,7 +15,7 @@ info:
     name: 権田原佃煮店 システム管理室（不在）
     email: tanaka-former-employee@gondawara-tsukudani.example.com
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:9080/api
     description: ローカル開発・検証環境
   - url: https://api.gondawara-tsukudani.jp/v1
     description: 本番環境（※未稼働）
