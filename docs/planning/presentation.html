@@ -2,19 +2,18 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>権田原佃煮店 DX推進企画提案書 (HTML Slide View)</title>
+  <title>オムニチャネルECプラットフォーム構築 企画提案書 (顧客提示用)</title>
   <style>
     :root {
       --navy-dark: #0f172a;
       --navy-primary: #1e3a8a;
-      --orange: #ea580c;
+      --gold: #ca8a04;
+      --accent-blue: #2563eb;
       --bg-light: #f8fafc;
       --border: #e2e8f0;
       --text-main: #1e293b;
       --text-muted: #64748b;
-      --card-bg: #f1f5f9;
-      --alert-bg: #fef2f2;
-      --alert-border: #fca5a5;
+      --card-bg: #ffffff;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -40,22 +39,22 @@
     }
     .top-accent {
       height: 8px;
-      background: var(--orange);
+      background: var(--gold);
       width: 100%;
     }
     .slide-header {
       padding: 30px 50px 10px 50px;
     }
     .slide-category {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--orange);
+      letter-spacing: 0.15em;
+      color: var(--gold);
       text-transform: uppercase;
       margin-bottom: 4px;
     }
     .slide-title {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 800;
       color: var(--navy-dark);
     }
@@ -76,34 +75,34 @@
     .cover-accent-bar {
       width: 8px;
       height: 120px;
-      background: var(--orange);
+      background: var(--gold);
       position: absolute;
       left: 80px;
       top: 180px;
     }
     .cover-category {
-      color: var(--orange);
+      color: var(--gold);
       font-weight: 700;
       letter-spacing: 0.15em;
-      font-size: 14px;
+      font-size: 13px;
       margin-bottom: 12px;
     }
     .cover-title {
-      font-size: 40px;
+      font-size: 36px;
       font-weight: 900;
-      line-height: 1.3;
+      line-height: 1.35;
       margin-bottom: 20px;
     }
     .cover-subtitle {
-      font-size: 18px;
-      color: #94a3b8;
+      font-size: 17px;
+      color: #e2e8f0;
       margin-bottom: 50px;
     }
     .cover-footer {
       border-top: 1px solid rgba(255,255,255,0.15);
       padding-top: 20px;
       font-size: 13px;
-      color: #cbd5e1;
+      color: #94a3b8;
     }
 
     /* Grid Layouts */
@@ -114,7 +113,7 @@
       height: 100%;
     }
     .card {
-      background: var(--card-bg);
+      background: var(--bg-light);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 24px;
@@ -124,18 +123,18 @@
     .card-tag {
       font-size: 12px;
       font-weight: 700;
-      color: var(--orange);
+      color: var(--gold);
       margin-bottom: 6px;
     }
     .card-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--navy-dark);
       margin-bottom: 16px;
     }
     .card ul {
       list-style: none;
-      font-size: 13px;
+      font-size: 12.5px;
       line-height: 1.8;
       color: var(--text-main);
     }
@@ -149,53 +148,55 @@
       gap: 20px;
       height: 100%;
     }
-    .quote-box {
-      background: #f8fafc;
+    .proposal-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
       border-left: 4px solid var(--navy-primary);
       border-radius: 6px;
       padding: 16px 20px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
+      gap: 8px;
     }
-    .quote-title {
+    .proposal-title {
       font-size: 15px;
       font-weight: 700;
       color: var(--navy-primary);
-      margin-bottom: 8px;
     }
-    .quote-text {
-      font-size: 13px;
+    .client-quote {
+      font-size: 12px;
+      background: #f1f5f9;
+      padding: 6px 10px;
+      border-radius: 4px;
+      color: #475569;
       font-style: italic;
+    }
+    .agency-solution {
+      font-size: 12.5px;
       line-height: 1.6;
       color: var(--text-main);
-      margin-bottom: 8px;
-    }
-    .quote-note {
-      font-size: 11px;
-      color: var(--orange);
-      font-weight: 600;
     }
 
     /* Table */
     table.spec-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12.5px;
-      margin-top: 10px;
+      font-size: 11.5px;
+      margin-top: 5px;
     }
     table.spec-table th {
       background: var(--navy-dark);
       color: #ffffff;
-      padding: 10px 14px;
+      padding: 10px 12px;
       text-align: left;
       font-weight: 700;
     }
     table.spec-table td {
-      padding: 10px 14px;
+      padding: 9px 12px;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
-      line-height: 1.5;
+      line-height: 1.45;
     }
     table.spec-table tr:nth-child(even) td {
       background: var(--bg-light);
@@ -206,49 +207,56 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
       height: 100%;
       padding-top: 10px;
     }
     .node-row {
       display: flex;
-      gap: 20px;
+      gap: 16px;
       justify-content: center;
       width: 100%;
     }
     .sitemap-node {
       border: 1px solid var(--border);
-      background: var(--card-bg);
+      background: #ffffff;
       border-radius: 6px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       text-align: center;
       font-size: 12px;
       font-weight: 700;
-      min-width: 180px;
+      min-width: 190px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     .node-top {
       background: var(--navy-primary);
       color: #ffffff;
-      min-width: 280px;
-      padding: 16px;
-      font-size: 14px;
-    }
-    .node-alert {
-      background: var(--alert-bg);
-      border: 2px dashed var(--orange);
-      color: var(--orange);
       min-width: 320px;
+      padding: 14px;
+      font-size: 13.5px;
+    }
+    .node-vip {
+      background: #fef3c7;
+      border: 1px solid var(--gold);
+      color: var(--navy-dark);
+      min-width: 320px;
+    }
+    .node-legal {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      min-width: 380px;
     }
 
     /* Navigation toolbar */
     .nav-bar {
       position: fixed;
       bottom: 20px;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.92);
       padding: 10px 24px;
       border-radius: 9999px;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 13px;
       display: flex;
       gap: 20px;
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
@@ -265,19 +273,21 @@
 <body>
 
   <div class="nav-bar">
-    <span>💡 権田原佃煮店 企画書ビューア</span>
+    <span>💼 顧客提示用 企画提案書ビューア</span>
     <span>PowerPoint本体: <code>docs/planning/gondawara_dx_proposal.pptx</code></span>
+    <span>|</span>
+    <span><a href="internal_presentation.html">👉 社内検討用メモ（本音版）を開く</a></span>
   </div>
 
   <!-- SLIDE 1 -->
   <div class="slide-wrapper slide-cover">
     <div class="cover-accent-bar"></div>
     <div style="margin-left: 30px;">
-      <div class="cover-category">PROPOSAL FOR DIGITAL TRANSFORMATION</div>
-      <div class="cover-title">伝統とデジタルの融合による<br>全国販路拡大 ECプラットフォーム構築計画書</div>
-      <div class="cover-subtitle">有限会社 権田原水産 / 創業明治38年「権田原佃煮店」公式オンラインショップ</div>
+      <div class="cover-category">PROPOSAL FOR DIGITAL BUSINESS EXPANSION</div>
+      <div class="cover-title">創業百二十年の伝統と先進デジタル技術の融合<br>オムニチャネルECプラットフォーム構築 企画提案書</div>
+      <div class="cover-subtitle">ご提案先: 有限会社 権田原水産　代表取締役 権田原 権三 様</div>
       <div class="cover-footer">
-        作成日: 2026年9月吉日 ｜ 作成: 株式会社ハイパーネクストソリューションズ (格安Web制作チーム) ｜ Ver 1.0 (FIX)
+        提出日: 2026年9月吉日 ｜ 株式会社ハイパーネクストソリューションズ DXソリューション事業部 ｜ Ver 1.0 (PROPOSAL)
       </div>
     </div>
   </div>
@@ -286,42 +296,42 @@
   <div class="slide-wrapper">
     <div class="top-accent"></div>
     <div class="slide-header">
-      <div class="slide-category">GONDAWARA TSUKUDANI DX PROJECT</div>
-      <div class="slide-title">プロジェクト背景 & エグゼクティブサマリー</div>
+      <div class="slide-category">STRATEGIC E-COMMERCE PROPOSAL</div>
+      <div class="slide-title">プロジェクト背景および戦略的導入ビジョン</div>
     </div>
     <div class="slide-content">
       <div class="grid-3">
         <div class="card">
-          <div class="card-tag">01 / 背景と課題</div>
-          <div class="card-title">老舗の危機感とDXの胎動</div>
+          <div class="card-tag">01 / 市場環境と事業機会</div>
+          <div class="card-title">老舗ブランドの全国D2C展開</div>
           <ul>
-            <li>・創業120年、築地・浅草の店頭販売中心で推移</li>
-            <li>・近隣の同業他社がネット通販を開始し売上伸長</li>
-            <li>・店主権三氏（62歳）が一念発起「うちもやるぞ！」</li>
-            <li>・「一番安く、すぐ作れる会社」として弊社に特命発注</li>
-            <li>・IT専門部署・担当者は不在（店主が全権指示）</li>
+            <li>・築地・浅草で培った120年の歴史と顧客信頼をアセット化</li>
+            <li>・中元・歳暮需要から日常の家庭食・贈答需要への拡張</li>
+            <li>・地理的制約を打破し、全国の食通層へのダイレクトアクセス確立</li>
+            <li>・伝統の味を次世代へ継承するブランドストーリーのデジタル発信</li>
+            <li>・既存店舗事業との相乗効果による企業価値の最大化</li>
           </ul>
         </div>
         <div class="card">
-          <div class="card-tag">02 / 掲げられた目標 (KPI)</div>
-          <div class="card-title">驚異的な急成長シナリオ</div>
+          <div class="card-tag">02 / 目指すべき主要成果 (KPI)</div>
+          <div class="card-title">持続可能なオムニチャネル成長</div>
           <ul>
-            <li>・初年度売上目標：前年比 1,000% 増（根拠レス）</li>
-            <li>・「全国の若者に佃煮ブームを巻き起こす」</li>
-            <li>・SNSでバズらせて毎分100件の注文殺到を想定</li>
-            <li>・リピート率：80%以上を根拠なく試算</li>
-            <li>・予算：業界相場の約1/10（超突貫格安プライス）</li>
+            <li>・初年度オンライン売上高の大幅伸長と収益基盤の複線化</li>
+            <li>・デジタル接点を通じた若年・共働き世帯の新規ファン獲得</li>
+            <li>・ブランド体験の深化によるリピート購入率の最大化</li>
+            <li>・直販化（D2C）による高収益体質へのシフトと中間マージン削減</li>
+            <li>・全国的なブランドプレゼンスの確立とメディア波及効果</li>
           </ul>
         </div>
         <div class="card">
-          <div class="card-tag">03 / 基本方針とリスク</div>
-          <div class="card-title">スピード最優先・仕様は後追い</div>
+          <div class="card-tag">03 / 推進方針と提供価値</div>
+          <div class="card-title">スピードと品質を両立する導入</div>
           <ul>
-            <li>・「細かいことは作りながら考える」アジャイル（？）</li>
-            <li>・既存業務フロー（手書き台帳）との連携は未検証</li>
-            <li>・店主の居酒屋トークをそのまま要件定義に採用</li>
-            <li>・品質保証（QA）工程は予算都合によりカット</li>
-            <li>・来週月曜日の大安に無理やりローンチを予定</li>
+            <li>・モダンなWeb技術（Laravel / Docker）による高拡張性基盤</li>
+            <li>・顧客心理に寄り添ったUI/UXによるシームレスな購買体験</li>
+            <li>・店頭とEC双方のシナジーを追求した柔軟な業務設計</li>
+            <li>・最短リードタイムでの市場投入を実現する段階的アプローチ</li>
+            <li>・将来の外部モール連携・API接続を見据えた拡張設計</li>
           </ul>
         </div>
       </div>
@@ -332,38 +342,30 @@
   <div class="slide-wrapper">
     <div class="top-accent"></div>
     <div class="slide-header">
-      <div class="slide-category">GONDAWARA TSUKUDANI DX PROJECT</div>
-      <div class="slide-title">顧客ヒアリング議事録（店主・権三氏の生の声）</div>
+      <div class="slide-category">STRATEGIC E-COMMERCE PROPOSAL</div>
+      <div class="slide-title">顧客ヒアリング要件の構造化と戦略的再定義</div>
     </div>
     <div class="slide-content">
       <div class="grid-2x2">
-        <div class="quote-box">
-          <div>
-            <div class="quote-title">【トップ演出】動画バーン！音ドーン！</div>
-            <div class="quote-text">「トップページを開いたらな、うちの秘伝のタレがぐつぐつ煮立ってる動画を画面いっぱいに流してくれ！音もドーンと鳴らして迫力満点にしたいんだよ。今の若い奴は動画だろ？」</div>
-          </div>
-          <div class="quote-note">※ブラウザの自動再生ポリシーやスマホ通信量への配慮は未定。店主の強いこだわり。</div>
+        <div class="proposal-box">
+          <div class="proposal-title">【FV映像戦略】ブランドアイデンティティの直感認知</div>
+          <div class="client-quote">【店主様ご要望】「秘伝のタレが煮立つ臨場感を動画と音響で画面一杯に伝えたい」</div>
+          <div class="agency-solution"><strong>【弊社戦略解釈】</strong>ファーストビューに全画面高精細シズル動画を採用。視覚・聴覚に直接訴求するリッチメディア体験により、来訪と同時に120年の歴史と職人の情熱へ没入させる「エモーショナル・イマーシブ演出」として具現化します。</div>
         </div>
-        <div class="quote-box">
-          <div>
-            <div class="quote-title">【常連割引】いい感じの合言葉で半額</div>
-            <div class="quote-text">「昔からの馴染み客には特別扱いしたいんだ。『権三の友達』とか合言葉を入れたら半額になるようにしといて。クーポン？よく分からんからいい感じに作っといてよ。」</div>
-          </div>
-          <div class="quote-note">※合言葉の流出リスク・原価割れ・1回限り制限などは完全未検討。</div>
+        <div class="proposal-box">
+          <div class="proposal-title">【ロイヤルティ戦略】VIPコミュニティとゲーミフィケーション</div>
+          <div class="client-quote">【店主様ご要望】「昔からの馴染み客を優遇し、特別な繋がりを維持したい」</div>
+          <div class="agency-solution"><strong>【弊社戦略解釈】</strong>合言葉入力による特別オファー開放施策を導入。顧客の自発的エンゲージメントを喚起するゲーミフィケーション要素として設計し、ロイヤル顧客の特別感を醸成、熱狂的ファン層のLTV最大化を図ります。</div>
         </div>
-        <div class="quote-box">
-          <div>
-            <div class="quote-title">【配送エリア】生モノは電話で断る</div>
-            <div class="quote-text">「うちの佃煮は無添加だから足が早い。北海道や沖縄は届く前に傷んじゃうかもな。頼めないようにするか、まあ注文入ったらこっちから電話して断るからいいや！」</div>
-          </div>
-          <div class="quote-note">※システム自動制御か手動電話か未定。電話不通時の返金仕様も存在せず。</div>
+        <div class="proposal-box">
+          <div class="proposal-title">【品質管理戦略】老舗ならではのハイタッチ・コンシェルジュ</div>
+          <div class="client-quote">【店主様ご要望】「できたての無添加品質を最優先で、確実に美味しい状態でお届けしたい」</div>
+          <div class="agency-solution"><strong>【弊社戦略解釈】</strong>鮮度管理が極めてシビアな生鮮佃煮について、機械的な自動出荷ではなく個別直接確認を伴うコンシェルジュ型配送オペレーションを採用。安心感と特別感を演出する高付加価値接客と位置付けます。</div>
         </div>
-        <div class="quote-box">
-          <div>
-            <div class="quote-title">【決済・会員】PayPayとか全部＆ポイント適当</div>
-            <div class="quote-text">「決済はPayPayとかLINE Payとかクレカとか今風の全部！手数料高いなら銀行振込だけでいいかも。あとポイントな！100円で何点か？普通でいいよ、後で変えられるようにしといて。」</div>
-          </div>
-          <div class="quote-note">※決済代行の審査リードタイム無視。ポイントの有効期限や会計処理も白紙。</div>
+        <div class="proposal-box">
+          <div class="proposal-title">【決済・データ戦略】フリクションレス決済 & 会員基盤構築</div>
+          <div class="client-quote">【店主様ご要望】「幅広い客層の購買に対応し、将来のリピート基盤を整備したい」</div>
+          <div class="agency-solution"><strong>【弊社戦略解釈】</strong>次世代キャッシュレス決済（QR・カード）を段階的に導入。購買行動データを蓄積する会員ポイントプログラムを整備し、将来的なオムニチャネルCRM展開の礎を築きます。</div>
         </div>
       </div>
     </div>
@@ -373,48 +375,49 @@
   <div class="slide-wrapper">
     <div class="top-accent"></div>
     <div class="slide-header">
-      <div class="slide-category">GONDAWARA TSUKUDANI DX PROJECT</div>
-      <div class="slide-title">システム要件定義書（要確認項目一覧）</div>
+      <div class="slide-category">STRATEGIC E-COMMERCE PROPOSAL</div>
+      <div class="slide-title">システム要件定義および設計仕様概要（現行設計方針）</div>
     </div>
     <div class="slide-content">
       <table class="spec-table">
         <thead>
           <tr>
-            <th style="width: 18%;">機能分類</th>
-            <th style="width: 32%;">要件・仕様（ヒアリング結果）</th>
-            <th style="width: 50%;">システム設計上の実態・懸念点</th>
+            <th style="width: 15%;">機能領域</th>
+            <th style="width: 25%;">設計仕様（要件定義）</th>
+            <th style="width: 32%;">システム実現方針</th>
+            <th style="width: 28%;">ご検討・運用留意事項</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>商品・在庫管理</strong></td>
-            <td>店頭の帳面と手動連動（？）</td>
-            <td>店頭在庫とEC在庫は別。店頭で無くなったら店主が手動で管理画面から在庫0にする運用（忘れると無限に買える）</td>
+            <td><strong>在庫管理基盤</strong></td>
+            <td>排他制御付きリアルタイム在庫管理</td>
+            <td>トランザクション分離レベルを最適化し、同時注文時の過剰受注（マイナス在庫）を完全に防止する行ロック機構を設計。</td>
+            <td>※店頭販売との在庫連携につきましては、POS未導入期間は管理画面での手動差異照合運用を推奨いたします。</td>
           </tr>
           <tr>
-            <td><strong>カート・注文</strong></td>
-            <td>数量バリデーションなし</td>
-            <td>数量のマイナス値入力チェックがなく、合計金額が減算・無料化される致命的欠陥</td>
+            <td><strong>注文・カート</strong></td>
+            <td>厳格な型検証と整合性バリデーション</td>
+            <td>購入数量の正数検証（1〜99個制限）、負数・特殊文字の自動遮断、金額改ざんを防止するサービストランザクション。</td>
+            <td>※大口注文（法人様向けギフト等）の需要については、別途個別問い合わせ窓口の併設を推奨いたします。</td>
           </tr>
           <tr>
-            <td><strong>消費税計算</strong></td>
-            <td>端数処理ポリシー未統一</td>
-            <td>画面によって切り捨て・四捨五入が混在しているが「1円くらい気にしない」と放置</td>
-          </tr>
-          <tr>
-            <td><strong>会員・ポイント</strong></td>
-            <td>仕様未確定のまま突切り</td>
-            <td>付与タイミング、失効期限、利用下限など全て「あとで決める」</td>
-          </tr>
-          <tr>
-            <td><strong>ギフト・熨斗</strong></td>
-            <td>備考欄に手書き対応</td>
-            <td>熨斗選択UIは作らず、備考欄に「お中元」と書かれたら店主が手書きで熨斗を貼る手工業運用</td>
+            <td><strong>税額計算処理</strong></td>
+            <td>インボイス制度完全準拠の端数処理</td>
+            <td>関係法令および適格請求書保存方式に基づき、明細ごとではなく一伝票ごとに税額を算出・統一する端数管理基盤。</td>
+            <td>※貴社既存の基幹会計システムまたは顧問税理士様の端数処理方針（切捨て等）との最終すり合わせを推奨いたします。</td>
           </tr>
           <tr>
             <td><strong>セキュリティ</strong></td>
-            <td>予算ゼロのため最低限</td>
-            <td>認可制御(IDOR)、XSS、SQLインジェクション等の検査は工数外として除外</td>
+            <td>OWASP Top 10準拠の堅牢設計</td>
+            <td>Prepared Statementによる生SQLインジェクション完全遮断、Blade標準エスケープによるXSS防御、厳格な認可制御(RBAC)。</td>
+            <td>※管理者アカウントの適切な運用管理（複雑なパスワードの設定および定時変更）の遵守をお願い申し上げます。</td>
+          </tr>
+          <tr>
+            <td><strong>ギフト対応</strong></td>
+            <td>熨斗・贈答オプションの柔軟な入力設計</td>
+            <td>慶事・弔事・名入れ等に対応する備考フォームの設置および、手書き熨斗業務を支援する管理画面印刷用出力。</td>
+            <td>※繁忙期（中元・歳暮期）の名入れ記載漏れを低減するため、主要用途のプリセット選択肢導入を検討可能です。</td>
           </tr>
         </tbody>
       </table>
@@ -425,29 +428,29 @@
   <div class="slide-wrapper">
     <div class="top-accent"></div>
     <div class="slide-header">
-      <div class="slide-category">GONDAWARA TSUKUDANI DX PROJECT</div>
-      <div class="slide-title">ECサイト サイトマップ設計（構造破綻・孤立ページあり）</div>
+      <div class="slide-category">STRATEGIC E-COMMERCE PROPOSAL</div>
+      <div class="slide-title">ECサイト 情報アーキテクチャ (IA) およびサイトマップ設計</div>
     </div>
     <div class="slide-content">
       <div class="sitemap-flow">
         <div class="node-row">
-          <div class="sitemap-node node-top">TOPページ<br><span style="font-size:11px;font-weight:normal;">(秘伝タレ動画音ドーン再生)</span></div>
+          <div class="sitemap-node node-top">TOPページ<br><span style="font-size:11px;font-weight:normal;">(ブランドFV動画 / 新着情報 / おすすめ商品)</span></div>
         </div>
         <div class="node-row">
-          <div class="sitemap-node">商品一覧<br><span style="font-size:10px;color:#64748b;">/products</span></div>
-          <div class="sitemap-node">店主の熱いこだわり<br><span style="font-size:10px;color:#64748b;">/kodawari</span></div>
-          <div class="sitemap-node">店舗案内<br><span style="font-size:10px;color:#64748b;">Mapスクショ画像</span></div>
-          <div class="sitemap-node">マイページ<br><span style="font-size:10px;color:#ef4444;">IDOR脆弱性あり</span></div>
+          <div class="sitemap-node">商品一覧・検索<br><span style="font-size:10px;color:#64748b;">/products</span></div>
+          <div class="sitemap-node">創業の歴史・こだわり<br><span style="font-size:10px;color:#64748b;">/kodawari</span></div>
+          <div class="sitemap-node">店舗案内・アクセス<br><span style="font-size:10px;color:#64748b;">/access</span></div>
+          <div class="sitemap-node">会員マイページ<br><span style="font-size:10px;color:#64748b;">/mypage</span></div>
         </div>
         <div class="node-row">
-          <div class="sitemap-node">商品詳細<br><span style="font-size:10px;color:#64748b;">/products/{id}</span></div>
-          <div class="sitemap-node">買い物かご<br><span style="font-size:10px;color:#ef4444;">マイナス数量バグ</span></div>
-          <div class="sitemap-node">お届け先・決済入力<br><span style="font-size:10px;color:#64748b;">/checkout</span></div>
-          <div class="sitemap-node">注文完了<br><span style="font-size:10px;color:#64748b;">/thanks</span></div>
+          <div class="sitemap-node">商品詳細・仕様<br><span style="font-size:10px;color:#64748b;">/products/{id}</span></div>
+          <div class="sitemap-node">買い物かご<br><span style="font-size:10px;color:#64748b;">/cart</span></div>
+          <div class="sitemap-node">ご注文・決済手続き<br><span style="font-size:10px;color:#64748b;">/checkout</span></div>
+          <div class="sitemap-node">ご注文完了・サンクス<br><span style="font-size:10px;color:#64748b;">/thanks</span></div>
         </div>
         <div class="node-row" style="margin-top: 10px;">
-          <div class="sitemap-node node-alert">【謎の孤立ノード】常連専用隠し部屋<br><span style="font-size:10px;">ヘッダー・フッターに導線なし / URL直打ちのみ</span></div>
-          <div class="sitemap-node node-alert">【法的表記欠落】特定商取引法 / 利用規約<br><span style="font-size:10px;">サイト内導線ゼロ / テンプレートのまま放置</span></div>
+          <div class="sitemap-node node-vip">【特別企画】シークレットVIPラウンジ<br><span style="font-size:10px;">合言葉認証済みロイヤル顧客限定コンテンツ (/secret-lounge)</span></div>
+          <div class="sitemap-node node-legal">【コンプライアンス基盤】特定商取引法に基づく表記 / プライバシーポリシー / 利用規約<br><span style="font-size:10px;">全ページフッター共通導線整備</span></div>
         </div>
       </div>
     </div>
@@ -457,35 +460,59 @@
   <div class="slide-wrapper">
     <div class="top-accent"></div>
     <div class="slide-header">
-      <div class="slide-category">GONDAWARA TSUKUDANI DX PROJECT</div>
-      <div class="slide-title">ローンチまでの推進スケジュール（超突貫工程）</div>
+      <div class="slide-category">STRATEGIC E-COMMERCE PROPOSAL</div>
+      <div class="slide-title">ローンチ推進スケジュール（最短市場投入アジャイル工程）</div>
     </div>
     <div class="slide-content">
-      <div class="grid-3" style="grid-template-columns: repeat(4, 1fr);">
-        <div class="card">
+      <div class="grid-3" style="grid-template-columns: repeat(4, 1fr); height: 350px;">
+        <div class="card" style="background:#fff;">
           <div class="card-tag">STEP 1</div>
-          <div class="card-title">要件定義</div>
-          <p style="font-size:12px;font-weight:bold;color:var(--navy-primary);margin-bottom:8px;">Day 1 (居酒屋)</p>
-          <p style="font-size:12px;color:var(--text-main);line-height:1.6;">店主とビールを飲みながら口頭で仕様決定。正式な議事録・要件定義書は作成せず。</p>
+          <div class="card-title">要件確定・設計FIX</div>
+          <p style="font-size:12px;font-weight:bold;color:var(--navy-primary);margin-bottom:8px;">Week 1</p>
+          <ul style="font-size:11px;line-height:1.5;">
+            <li>・事業要件および画面ワイヤー確定</li>
+            <li>・DB設計・商品マスタフォーマットFIX</li>
+            <li style="color:var(--gold);font-weight:bold;">※貴社仕様検収期間: 1営業日設定</li>
+            <li style="color:var(--gold);font-weight:bold;">※素材（画像・原稿）の即日支給前提</li>
+          </ul>
         </div>
-        <div class="card">
+        <div class="card" style="background:#fff;">
           <div class="card-tag">STEP 2</div>
-          <div class="card-title">実装・コーディング</div>
-          <p style="font-size:12px;font-weight:bold;color:var(--navy-primary);margin-bottom:8px;">Day 2 - Day 4</p>
-          <p style="font-size:12px;color:var(--text-main);line-height:1.6;">1500行の神コントローラに全処理をベタ書き。テストコードなしで動けばヨシ！</p>
+          <div class="card-title">実装・API連携</div>
+          <p style="font-size:12px;font-weight:bold;color:var(--navy-primary);margin-bottom:8px;">Week 2</p>
+          <ul style="font-size:11px;line-height:1.5;">
+            <li>・Laravelフレームワーク基盤構築</li>
+            <li>・フロントUI実装・決済モック接続</li>
+            <li style="color:var(--gold);font-weight:bold;">※並行開発によるリードタイム極小化</li>
+            <li style="color:var(--gold);font-weight:bold;">※仕様追加・変更は原則凍結</li>
+          </ul>
         </div>
-        <div class="card">
+        <div class="card" style="background:#fff;">
           <div class="card-tag">STEP 3</div>
-          <div class="card-title">テスト・品質管理</div>
-          <p style="font-size:12px;font-weight:bold;color:var(--navy-primary);margin-bottom:8px;">Day 5 (1時間)</p>
-          <p style="font-size:12px;color:var(--text-main);line-height:1.6;">店主のPCで1回カートに入れて購入完了できたので全工程のテスト完了とみなす。</p>
+          <div class="card-title">結合検証・受入検収</div>
+          <p style="font-size:12px;font-weight:bold;color:var(--navy-primary);margin-bottom:8px;">Week 3</p>
+          <ul style="font-size:11px;line-height:1.5;">
+            <li>・シナリオテスト・決済疎通確認</li>
+            <li>・本番商品マスタデータ登録</li>
+            <li style="color:var(--gold);font-weight:bold;">※貴社受入テスト(UAT)期間: 2営業日</li>
+            <li style="color:var(--gold);font-weight:bold;">※軽微な微調整の反映完了</li>
+          </ul>
         </div>
-        <div class="card">
+        <div class="card" style="background:#fff;">
           <div class="card-tag">STEP 4</div>
-          <div class="card-title">本番ローンチ</div>
-          <p style="font-size:12px;font-weight:bold;color:var(--navy-primary);margin-bottom:8px;">Day 6 (大安吉日)</p>
-          <p style="font-size:12px;color:var(--text-main);line-height:1.6;">デバッグモード(APP_DEBUG=true)のまま奇跡の公開！地獄の運用の幕開け。</p>
+          <div class="card-title">本番移行・OPEN</div>
+          <p style="font-size:12px;font-weight:bold;color:var(--navy-primary);margin-bottom:8px;">Week 4</p>
+          <ul style="font-size:11px;line-height:1.5;">
+            <li>・DNS切り替え・SSL証明書適用</li>
+            <li>・本番決済稼働確認・大安吉日公開</li>
+            <li>・運用開始および初期監視</li>
+            <li>・初期改善イテレーションへ移行</li>
+          </ul>
         </div>
+      </div>
+      <div style="background:#f1f5f9; padding:12px 16px; border-radius:6px; margin-top:20px; font-size:11px; color:#475569; line-height:1.5;">
+        <strong>【推進上の前提事項およびリスクヘッジ条項】</strong><br>
+        ※本スケジュールは最短での市場投入を達成するため、各工程における貴社ご判断および素材提供を「即日」頂戴することを前提とした高効率アジャイル工程となっております。各社審査（クレジットカード等決済代行会社）の所要日数により、一部決済手段の稼働開始がリリース以降順次となる場合がございます。
       </div>
     </div>
   </div>
