@@ -2,8 +2,9 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>権田原佃煮店 - 外部連携API仕様書 (Swagger風)</title>
+  <title>権田原佃煮店 - 外部連携API仕様書 (Swagger UI)</title>
   <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css" />
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -11,47 +12,56 @@
       background: #fafafa;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
-    .educational-banner {
-      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    .qa-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
       color: #ffffff;
-      padding: 16px 24px;
+      padding: 16px 28px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .educational-banner h1 {
+    .qa-header h1 {
       margin: 0 0 6px 0;
       font-size: 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-weight: 700;
     }
-    .educational-banner p {
+    .qa-header p {
       margin: 0;
-      font-size: 14px;
+      font-size: 13px;
+      opacity: 0.9;
       line-height: 1.5;
-      opacity: 0.95;
     }
     .badge {
       display: inline-block;
-      padding: 2px 8px;
-      font-size: 12px;
+      padding: 4px 10px;
+      font-size: 11px;
       font-weight: bold;
       border-radius: 9999px;
-      background-color: #ef4444;
-      color: white;
+      background-color: #ca8a04;
+      color: #ffffff;
+      margin-left: 8px;
     }
   </style>
 </head>
 <body>
-  <div class="educational-banner">
-    <h1>
-      <span>権田原佃煮店 外部連携API仕様書</span>
-      <span class="badge">※見た目だけSwagger</span>
-    </h1>
-    <p>
-      【研修・演習用ガイダンス】<br>
-      一見すると最新のOpenAPI 3.0で美しく構造化されたSwagger UIですが、前任者が退職直前に30分で作ったため、<strong>実際の実装コード（<code>app/Http/Controllers/Api/GoodsApiController.php</code>）と盛大に乖離しています。</strong><br>
-      「エンドポイントURLが違う」「パラメータ型が嘘」「認証トークンの渡し方が謎」「HTTP 200なのにエラーが返る」などの地雷を探し出してください。
-    </p>
+  <div class="qa-header">
+    <div>
+      <h1>
+        権田原佃煮店 外部連携API仕様書 (v1)
+        <span class="badge">QA / テスター検証用</span>
+      </h1>
+      <p>
+        【テスター向け演習ガイダンス】<br>
+        本仕様書は、権田原佃煮店の外部連携APIを網羅的に定義した正式ドキュメントです。<br>
+        ただし、実務でよくあるように<strong>「だいたい合っているが、一部の型・境界値・キー名・HTTPステータスコード等に不正確な記述や実装バグ」</strong>が潜んでいます。<br>
+        仕様書に基づいてテストケース（境界値・同値分割・異常系）を設計し、実際のレスポンスとの差異を発掘してください。
+      </p>
+    </div>
+    <div style="font-size: 12px; text-align: right; color: #cbd5e1;">
+      APIベースURL: <code>http://localhost:9080/api</code><br>
+      テスト用APIキー: <code>gondawara-secret-api-key-2026</code>
+    </div>
   </div>
 
   <div id="swagger-ui"></div>
@@ -59,198 +69,458 @@
   <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
   <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-standalone-preset.js"></script>
   <script>
-    window.onload = function() {
-      // file:// プロトコルでもCORSエラーにならず即座に閲覧できるよう、仕様をインライン展開
-      const spec = {
-        openapi: "3.0.3",
-        info: {
-          title: "権田原佃煮店 外部連携API仕様書 (Official)",
-          description: "創業明治38年・伝統の味「権田原佃煮店」の基幹受発注および在庫照会RESTful API仕様書です。\n\n**【注意（社内申し送り事項）】**\n前任のリードエンジニア（田中）が先月急遽退職したため、本ドキュメントの一部は最新の実装と異なる可能性があります。万が一エラーが発生した場合は実装コードを確認してください。",
-          version: "1.0.0-PROD"
-        },
-        servers: [
-          { url: "http://localhost:9080/api", description: "ローカル開発環境" }
-        ],
-        paths: {
-          "/v1/products": {
-            get: {
-              summary: "商品一覧の取得",
-              description: "公開中の佃煮商品一覧を取得します。\n\n**【地雷ポイント】**: 実際の実装URLは `GET /api/goods_list` です。このURLを叩いても404になります。",
-              parameters: [
-                {
-                  name: "limit",
-                  in: "query",
-                  description: "取得件数（※実装では `$_GET['max']` で受けており、英字を渡すとFatal Errorになります）",
-                  schema: { type: "integer", default: 20 }
-                },
-                {
-                  name: "category",
-                  in: "query",
-                  description: "商品カテゴリ",
-                  schema: { type: "string" }
-                }
-              ],
-              responses: {
-                "200": {
-                  description: "取得成功",
-                  content: {
-                    "application/json": {
-                      schema: {
-                        type: "object",
-                        properties: {
-                          status: { type: "string", example: "ok" },
-                          items: {
-                            type: "array",
-                            items: {
-                              type: "object",
-                              properties: {
-                                id: { type: "integer", example: 1 },
-                                name: { type: "string", example: "特選 築地あさり佃煮（100g）" },
-                                price: { type: "integer", example: 880 },
-                                stock: { type: "integer", example: 25 }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "default": {
-                  description: "エラー時（※実装ではHTTP 200のまま `{\"error\": \"だめです\"}` が返ります）",
-                  content: {
-                    "application/json": {
-                      schema: {
-                        type: "object",
-                        properties: {
-                          error: { type: "string", example: "パラメータが不正です" }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "/v1/inventory/{productId}": {
-            get: {
-              summary: "商品在庫数の照会",
-              description: "指定した商品のリアルタイム在庫数を取得します。",
-              parameters: [
-                {
-                  name: "productId",
-                  in: "path",
-                  required: true,
-                  schema: { type: "integer" },
+    // YAML定義を文字列として保持（ファイルプロトコルでも即座にパース・動作）
+    const yamlString = `
+openapi: 3.0.3
+info:
+  title: 権田原佃煮店 外部連携・公式Web API仕様書 (v1)
+  description: |
+    創業明治38年「権田原佃煮店」の基幹商品マスタ照会、在庫照会、代理受発注、およびレビュー投稿連携を行う公式RESTful API仕様書です。
+    提携ECモール・卸売業者・外部システムとの自動連携を想定して標準化されています。
+    
+    ### 認証方式
+    データ更新系API（注文作成等）では、リクエストヘッダーにAPIキーを付与してください。
+    * ヘッダー名: \`X-Gondawara-Api-Key\`
+    * テスト用APIキー: \`gondawara-secret-api-key-2026\`
+  version: 1.2.0-STABLE
+servers:
+  - url: http://localhost:9080/api
+    description: ローカル検証環境 (Port 9080)
+paths:
+  /v1/items:
+    get:
+      summary: 商品一覧の取得・検索
+      description: 販売中の佃煮商品一覧を取得します。キーワード検索やカテゴリによる絞り込み、ページネーションに対応しています。
+      parameters:
+        - name: keyword
+          in: query
+          description: 商品名または商品説明に含まれる検索キーワード（部分一致）
+          required: false
+          schema:
+            type: string
+            maxLength: 50
+            example: "あさり"
+        - name: category
+          in: query
+          description: 商品カテゴリコード
+          required: false
+          schema:
+            type: string
+            enum: [tsukudani, spicy, gift]
+            example: "tsukudani"
+        - name: page
+          in: query
+          description: 取得するページ番号
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+            example: 1
+        - name: limit
+          in: query
+          description: 1ページあたりの取得件数（最大100件まで指定可能）
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+            example: 20
+      responses:
+        '200':
+          description: 商品一覧の取得成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                  - total
+                  - current_page
+                  - limit
+                  - items
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  total:
+                    type: integer
+                    example: 6
+                  current_page:
+                    type: integer
+                    example: 1
+                  limit:
+                    type: integer
+                    example: 20
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ItemSummary'
+  /v1/items/{id}:
+    get:
+      summary: 商品詳細情報の取得
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+      responses:
+        '200':
+          description: 商品詳細の取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemDetail'
+        '404':
+          description: 指定された商品が存在しない場合
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: "指定された商品が見つかりません"
+  /v1/items/{id}/stock:
+    get:
+      summary: 商品在庫数の照会
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: 在庫照会成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - item_id
+                  - stock
+                  - in_stock
+                properties:
+                  item_id:
+                    type: integer
+                    example: 1
+                  stock:
+                    type: integer
+                    example: 50
+                  in_stock:
+                    type: boolean
+                    description: 在庫が1個以上ある場合は true、0個以下の場合は false
+                    example: true
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/orders:
+    post:
+      summary: 外部代理注文の登録
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - item_id
+                - quantity
+                - customer_name
+                - postal_code
+                - address
+                - phone
+              properties:
+                item_id:
+                  type: integer
                   example: 1
-                }
-              ],
-              responses: {
-                "200": {
-                  description: "照会成功",
-                  content: {
-                    "application/json": {
-                      schema: {
-                        type: "object",
-                        properties: {
-                          success: { type: "boolean", example: true },
-                          data: {
-                            type: "object",
-                            properties: {
-                              itemId: { type: "integer", example: 1 },
-                              itemStock: { type: "integer", example: 42 }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "/v1/orders": {
-            post: {
-              summary: "代理注文・外部受注登録",
-              description: "外部からの注文を登録します。\n\n**【地雷ポイント】**: レスポンス形式はJSONではなく平文テキスト `SUCCESS: 10024` が返ります。",
-              security: [{ ApiKeyAuth: [] }],
-              requestBody: {
-                required: true,
-                content: {
-                  "application/json": {
-                    schema: {
-                      type: "object",
-                      required: ["item_id", "quantity", "customer_name"],
-                      properties: {
-                        item_id: { type: "integer", example: 1 },
-                        quantity: { type: "integer", description: "数量（マイナス入力可能バグあり）", example: 2 },
-                        customer_name: { type: "string", example: "権田原 太郎" },
-                        address: { type: "string", example: "東京都中央区築地X-X-X" }
-                      }
-                    }
-                  }
-                }
-              },
-              responses: {
-                "200": {
-                  description: "注文受付完了",
-                  content: {
-                    "text/plain": {
-                      schema: { type: "string", example: "SUCCESS: 10024" }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "/v1/coupons/verify": {
-            post: {
-              summary: "クーポン・合言葉の有効性検証",
-              description: "店主の合言葉を検証します。",
-              requestBody: {
-                required: true,
-                content: {
-                  "application/json": {
-                    schema: {
-                      type: "object",
-                      properties: {
-                        code: { type: "string", example: "HIMITSU_50" }
-                      }
-                    }
-                  }
-                }
-              },
-              responses: {
-                "200": {
-                  description: "検証結果",
-                  content: {
-                    "application/json": {
-                      schema: {
-                        type: "object",
-                        properties: {
-                          valid: { type: "boolean", example: true },
-                          discount_rate: { type: "number", example: 0.5 }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        components: {
-          securitySchemes: {
-            ApiKeyAuth: {
-              type: "apiKey",
-              in: "header",
-              name: "X-Gondawara-Key",
-              description: "リクエストヘッダーにトークンを渡してください。（※コード側で secret123 にハードコードされています）"
-            }
-          }
-        }
-      };
+                quantity:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  example: 2
+                customer_name:
+                  type: string
+                  example: "権田原 太郎"
+                postal_code:
+                  type: string
+                  pattern: '^\\d{3}-\\d{4}$'
+                  example: "104-0045"
+                address:
+                  type: string
+                  example: "東京都中央区築地4-12-1"
+                phone:
+                  type: string
+                  example: "090-1234-5678"
+                notes:
+                  type: string
+                  example: "お中元のし希望"
+      responses:
+        '201':
+          description: 注文受付完了
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - order_id
+                  - order_number
+                  - total_price
+                  - status
+                properties:
+                  order_id:
+                    type: integer
+                    example: 1003
+                  order_number:
+                    type: string
+                    example: "API-20260927-ABCDE"
+                  total_price:
+                    type: integer
+                    example: 1936
+                  status:
+                    type: string
+                    example: "API受付完了"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v1/coupons/verify:
+    post:
+      summary: 合言葉・クーポンコードの有効性検証
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - code
+              properties:
+                code:
+                  type: string
+                  example: "HIMITSU_50"
+      responses:
+        '200':
+          description: クーポンの判定完了
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - valid
+                properties:
+                  valid:
+                    type: boolean
+                    example: true
+                  discount_amount:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "常連合言葉が正常に認証されました"
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v1/reviews:
+    get:
+      summary: 商品レビュー一覧の取得
+      parameters:
+        - name: item_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: レビュー一覧取得成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - item_id
+                  - total
+                  - reviews
+                properties:
+                  item_id:
+                    type: integer
+                    example: 1
+                  total:
+                    type: integer
+                    example: 2
+                  reviews:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReviewItem'
+    post:
+      summary: 商品レビューの投稿
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - item_id
+                - author_name
+                - rating
+                - comment
+              properties:
+                item_id:
+                  type: integer
+                  example: 1
+                author_name:
+                  type: string
+                  example: "築地通のサラリーマン"
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  example: 5
+                comment:
+                  type: string
+                  example: "あさりが大粒で絶品でした！"
+      responses:
+        '201':
+          description: レビュー投稿完了
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewItem'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Gondawara-Api-Key
+  schemas:
+    ItemSummary:
+      type: object
+      required:
+        - id
+        - name
+        - price
+        - stock
+        - category
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "名物 築地あさり佃煮（100g）"
+        price:
+          type: integer
+          example: 880
+        stock:
+          type: integer
+          example: 50
+        category:
+          type: string
+          example: "tsukudani"
+        description:
+          type: string
+          example: "創業以来継ぎ足しの秘伝ダレでふっくら煮上げた看板商品。"
+        image_url:
+          type: string
+          example: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
+    ItemDetail:
+      type: object
+      required:
+        - id
+        - name
+        - price
+        - stock
+        - category
+        - description
+        - imageUrl
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "名物 築地あさり佃煮（100g）"
+        price:
+          type: integer
+          example: 880
+        stock:
+          type: integer
+          example: 50
+        category:
+          type: string
+          example: "tsukudani"
+        description:
+          type: string
+          example: "明治38年の創業以来、継ぎ足し続けた秘伝の醤油ダレでふっくら煮上げた看板商品。"
+        imageUrl:
+          type: string
+          example: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
+    ReviewItem:
+      type: object
+      required:
+        - id
+        - item_id
+        - author_name
+        - rating
+        - comment
+        - created_at
+      properties:
+        id:
+          type: integer
+          example: 101
+        item_id:
+          type: integer
+          example: 1
+        author_name:
+          type: string
+          example: "佃煮マニア"
+        rating:
+          type: integer
+          example: 5
+        comment:
+          type: string
+          example: "あさりが大粒で本当に美味しいです！"
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-09-27T12:00:00Z"
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: "エラーメッセージの内容"
+  responses:
+    NotFound:
+      description: リソースが見つかりません
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: 認証エラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnprocessableEntity:
+      description: バリデーションエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+`;
 
+    window.onload = function() {
+      const spec = jsyaml.load(yamlString);
       const ui = SwaggerUIBundle({
         spec: spec,
         dom_id: '#swagger-ui',
