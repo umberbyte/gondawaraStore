@@ -40,17 +40,23 @@ class GondawaraShopController extends Controller
     {
         $keyword = $request->input('keyword');
         $category = $request->input('category');
+        $items = collect([]);
 
-        if (!empty($keyword)) {
-            // 【セキュリティ脆弱性: SQLインジェクション】
-            // プレースホルダを使わず、生の文字列結合でクエリを実行
-            // PoC: ' OR '1'='1
-            $rawSql = "SELECT * FROM items WHERE name LIKE '%" . $keyword . "%' OR description LIKE '%" . $keyword . "%'";
-            $items = DB::select($rawSql);
-        } elseif (!empty($category)) {
-            $items = DB::table('items')->where('category', $category)->get();
-        } else {
-            $items = DB::table('items')->get();
+        try {
+            if (!empty($keyword)) {
+                // 【セキュリティ脆弱性: SQLインジェクション】
+                // プレースホルダを使わず、生の文字列結合でクエリを実行
+                // PoC: ' OR '1'='1
+                $rawSql = "SELECT * FROM items WHERE name LIKE '%" . $keyword . "%' OR description LIKE '%" . $keyword . "%'";
+                $items = DB::select($rawSql);
+            } elseif (!empty($category)) {
+                $items = DB::table('items')->where('category', $category)->get();
+            } else {
+                $items = DB::table('items')->get();
+            }
+        } catch (\Exception $e) {
+            // DBマイグレーション未実行時でもエラー画面にならず空一覧を表示
+            session()->flash('error', 'データベースが未初期化です。「docker compose exec app php artisan migrate --seed」を実行してください。');
         }
 
         return view('items.index', compact('items', 'keyword', 'category'));
