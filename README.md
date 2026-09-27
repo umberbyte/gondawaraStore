@@ -23,6 +23,7 @@ gondawara-tsukudani/
 │   ├── api/                 # 【コンテンツ3】見た目だけSwagger風API仕様書
 │   │   ├── index.html                       # ダブルクリックで開くSwagger UIスタンドアロン
 │   │   └── openapi.yaml                     # 実装と盛大に乖離したOpenAPI 3.0仕様書
+│   ├── PROJECT_HISTORY.md   # プロジェクト制作・設計思想の変遷録（経緯書）
 │   ├── EDUCATIONAL_DESIGN.md # 三層構造（建前・本音・現実）の教育的意義解説書
 │   └── TEACHER_GUIDE.md     # 講師用解答集（バグ・脆弱性の原因と修正コード例）
 └── src/                     # 【コンテンツ1】バグ入り通販サイト「権田原佃煮店」本体 (Laravel)
