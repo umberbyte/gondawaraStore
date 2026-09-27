@@ -25,8 +25,13 @@ class GondawaraShopController extends Controller
     /** トップページ */
     public function index()
     {
-        // おすすめ商品
-        $featured_items = DB::table('items')->limit(3)->get();
+        try {
+            // おすすめ商品
+            $featured_items = DB::table('items')->limit(3)->get();
+        } catch (\Exception $e) {
+            // DBマイグレーション未実行時でもトップページを安全に表示
+            $featured_items = collect([]);
+        }
         return view('index', compact('featured_items'));
     }
 
