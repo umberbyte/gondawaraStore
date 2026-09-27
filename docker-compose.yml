@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:alpine
+    container_name: gondawara_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - gondawara-net
+
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: gondawara_app
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: gondawara_db
+      DB_USERNAME: gondawara_user
+      DB_PASSWORD: gondawara_pass
+      MAIL_HOST: mail
+      MAIL_PORT: 1025
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - gondawara-net
+
+  db:
+    image: mysql:8.0
+    container_name: gondawara_db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: gondawara_db
+      MYSQL_USER: gondawara_user
+      MYSQL_PASSWORD: gondawara_pass
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      timeout: 10s
+      retries: 5
+    networks:
+      - gondawara-net
+
+  mail:
+    image: axllent/mailpit
+    container_name: gondawara_mail
+    ports:
+      - "8025:8025" # Web UI
+      - "1025:1025" # SMTP
+    networks:
+      - gondawara-net
+
+volumes:
+  db_data:
+
+networks:
+  gondawara-net:
+    driver: bridge

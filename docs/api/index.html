@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>権田原佃煮店 - 外部連携API仕様書 (Swagger風)</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fafafa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .educational-banner {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: #ffffff;
+      padding: 16px 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .educational-banner h1 {
+      margin: 0 0 6px 0;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .educational-banner p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.95;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 9999px;
+      background-color: #ef4444;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="educational-banner">
+    <h1>
+      <span>権田原佃煮店 外部連携API仕様書</span>
+      <span class="badge">※見た目だけSwagger</span>
+    </h1>
+    <p>
+      【研修・演習用ガイダンス】<br>
+      一見すると最新のOpenAPI 3.0で美しく構造化されたSwagger UIですが、前任者が退職直前に30分で作ったため、<strong>実際の実装コード（<code>app/Http/Controllers/Api/GoodsApiController.php</code>）と盛大に乖離しています。</strong><br>
+      「エンドポイントURLが違う」「パラメータ型が嘘」「認証トークンの渡し方が謎」「HTTP 200なのにエラーが返る」などの地雷を探し出してください。
+    </p>
+  </div>
+
+  <div id="swagger-ui"></div>
+
+  <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-standalone-preset.js"></script>
+  <script>
+    window.onload = function() {
+      // file:// プロトコルでもCORSエラーにならず即座に閲覧できるよう、仕様をインライン展開
+      const spec = {
+        openapi: "3.0.3",
+        info: {
+          title: "権田原佃煮店 外部連携API仕様書 (Official)",
+          description: "創業明治38年・伝統の味「権田原佃煮店」の基幹受発注および在庫照会RESTful API仕様書です。\n\n**【注意（社内申し送り事項）】**\n前任のリードエンジニア（田中）が先月急遽退職したため、本ドキュメントの一部は最新の実装と異なる可能性があります。万が一エラーが発生した場合は実装コードを確認してください。",
+          version: "1.0.0-PROD"
+        },
+        servers: [
+          { url: "http://localhost:8080/api", description: "ローカル開発環境" }
+        ],
+        paths: {
+          "/v1/products": {
+            get: {
+              summary: "商品一覧の取得",
+              description: "公開中の佃煮商品一覧を取得します。\n\n**【地雷ポイント】**: 実際の実装URLは `GET /api/goods_list` です。このURLを叩いても404になります。",
+              parameters: [
+                {
+                  name: "limit",
+                  in: "query",
+                  description: "取得件数（※実装では `$_GET['max']` で受けており、英字を渡すとFatal Errorになります）",
+                  schema: { type: "integer", default: 20 }
+                },
+                {
+                  name: "category",
+                  in: "query",
+                  description: "商品カテゴリ",
+                  schema: { type: "string" }
+                }
+              ],
+              responses: {
+                "200": {
+                  description: "取得成功",
+                  content: {
+                    "application/json": {
+                      schema: {
+                        type: "object",
+                        properties: {
+                          status: { type: "string", example: "ok" },
+                          items: {
+                            type: "array",
+                            items: {
+                              type: "object",
+                              properties: {
+                                id: { type: "integer", example: 1 },
+                                name: { type: "string", example: "特選 築地あさり佃煮（100g）" },
+                                price: { type: "integer", example: 880 },
+                                stock: { type: "integer", example: 25 }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "default": {
+                  description: "エラー時（※実装ではHTTP 200のまま `{\"error\": \"だめです\"}` が返ります）",
+                  content: {
+                    "application/json": {
+                      schema: {
+                        type: "object",
+                        properties: {
+                          error: { type: "string", example: "パラメータが不正です" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "/v1/inventory/{productId}": {
+            get: {
+              summary: "商品在庫数の照会",
+              description: "指定した商品のリアルタイム在庫数を取得します。",
+              parameters: [
+                {
+                  name: "productId",
+                  in: "path",
+                  required: true,
+                  schema: { type: "integer" },
+                  example: 1
+                }
+              ],
+              responses: {
+                "200": {
+                  description: "照会成功",
+                  content: {
+                    "application/json": {
+                      schema: {
+                        type: "object",
+                        properties: {
+                          success: { type: "boolean", example: true },
+                          data: {
+                            type: "object",
+                            properties: {
+                              itemId: { type: "integer", example: 1 },
+                              itemStock: { type: "integer", example: 42 }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "/v1/orders": {
+            post: {
+              summary: "代理注文・外部受注登録",
+              description: "外部からの注文を登録します。\n\n**【地雷ポイント】**: レスポンス形式はJSONではなく平文テキスト `SUCCESS: 10024` が返ります。",
+              security: [{ ApiKeyAuth: [] }],
+              requestBody: {
+                required: true,
+                content: {
+                  "application/json": {
+                    schema: {
+                      type: "object",
+                      required: ["item_id", "quantity", "customer_name"],
+                      properties: {
+                        item_id: { type: "integer", example: 1 },
+                        quantity: { type: "integer", description: "数量（マイナス入力可能バグあり）", example: 2 },
+                        customer_name: { type: "string", example: "権田原 太郎" },
+                        address: { type: "string", example: "東京都中央区築地X-X-X" }
+                      }
+                    }
+                  }
+                }
+              },
+              responses: {
+                "200": {
+                  description: "注文受付完了",
+                  content: {
+                    "text/plain": {
+                      schema: { type: "string", example: "SUCCESS: 10024" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "/v1/coupons/verify": {
+            post: {
+              summary: "クーポン・合言葉の有効性検証",
+              description: "店主の合言葉を検証します。",
+              requestBody: {
+                required: true,
+                content: {
+                  "application/json": {
+                    schema: {
+                      type: "object",
+                      properties: {
+                        code: { type: "string", example: "HIMITSU_50" }
+                      }
+                    }
+                  }
+                }
+              },
+              responses: {
+                "200": {
+                  description: "検証結果",
+                  content: {
+                    "application/json": {
+                      schema: {
+                        type: "object",
+                        properties: {
+                          valid: { type: "boolean", example: true },
+                          discount_rate: { type: "number", example: 0.5 }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        components: {
+          securitySchemes: {
+            ApiKeyAuth: {
+              type: "apiKey",
+              in: "header",
+              name: "X-Gondawara-Key",
+              description: "リクエストヘッダーにトークンを渡してください。（※コード側で secret123 にハードコードされています）"
+            }
+          }
+        }
+      };
+
+      const ui = SwaggerUIBundle({
+        spec: spec,
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        layout: "StandaloneLayout"
+      });
+      window.ui = ui;
+    };
+  </script>
+</body>
+</html>

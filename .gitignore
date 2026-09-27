@@ -1,0 +1,29 @@
+# Dependencies
+/src/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel framework
+/src/storage/*.key
+/src/storage/framework/cache/data/*
+/src/storage/framework/sessions/*
+/src/storage/framework/views/*
+/src/storage/logs/*.log
+!/src/storage/framework/cache/data/.gitkeep
+!/src/storage/framework/sessions/.gitkeep
+!/src/storage/framework/views/.gitkeep
+!/src/storage/logs/.gitkeep
+
+# Environment
+# 教材用として .env.example は必ず含め、初期設定用の .env もクローン後即起動できるようにしています
+# 必要に応じて除外してください
+
+# Python & Venv
+venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db

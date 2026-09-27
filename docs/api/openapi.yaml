@@ -1,0 +1,218 @@
+openapi: 3.0.3
+info:
+  title: 権田原佃煮店 外部連携API仕様書 (Official)
+  description: |
+    ### 【重要】システム連携に関するご案内
+    創業明治38年・伝統の味「権田原佃煮店」の基幹受発注および在庫照会RESTful API仕様書です。
+    モダンなマイクロサービスアーキテクチャに基づき設計されています。
+
+    > **※注意事項（社内申し送り事項）:**
+    > * 前任のリードエンジニア（田中）が先月急遽退職したため、本ドキュメントの一部は最新の実装と異なる可能性があります。
+    > * 万が一エラーが発生した場合は、実装コード（`app/Http/Controllers/Api/GoodsApiController.php`）を直接ご確認ください。
+    > * 認証キーの形式が不明な場合は、Slackの過去ログを検索してください。
+  version: 1.0.0-PROD
+  contact:
+    name: 権田原佃煮店 システム管理室（不在）
+    email: tanaka-former-employee@gondawara-tsukudani.example.com
+servers:
+  - url: http://localhost:8080/api
+    description: ローカル開発・検証環境
+  - url: https://api.gondawara-tsukudani.jp/v1
+    description: 本番環境（※未稼働）
+
+paths:
+  /v1/products:
+    get:
+      summary: 商品一覧の取得
+      description: |
+        現在販売中の佃煮商品一覧を取得します。
+        
+        **【地雷ポイント】**: 実際の実装URLは `GET /api/goods_list` です。このURLを叩いても404になります。
+      operationId: getProductList
+      parameters:
+        - name: limit
+          in: query
+          description: 1ページあたりの取得件数（※実装では `$_GET['max']` で受け取っており、英字を渡すとFatal Errorになります）
+          required: false
+          schema:
+            type: integer
+            default: 20
+        - name: category
+          in: query
+          description: 商品カテゴリ（tsukudani, gift, spicy）
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 取得成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+        default:
+          description: 想定外のエラー（※実装ではHTTP 200のまま `{"error": "だめです"}` が返ります）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/inventory/{productId}:
+    get:
+      summary: 商品在庫数の照会
+      description: 指定した商品IDのリアルタイム在庫数を取得します。
+      operationId: getInventory
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: 商品ID (例: 1, 2, 3)
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 在庫照会成功
+          content:
+            application/json:
+              schema:
+                type: object
+                description: なぜか商品API（スネークケース）と違ってキャメルケースで返却されます
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      itemId:
+                        type: integer
+                        example: 1
+                      itemStock:
+                        type: integer
+                        example: 42
+                      isLowStock:
+                        type: boolean
+                        example: false
+
+  /v1/orders:
+    post:
+      summary: 代理注文・外部受注登録
+      description: |
+        提携卸業者・外部モールからの代理注文を登録します。
+        
+        **【地雷ポイント】**: レスポンス形式はJSONではなく、なぜか平文テキスト `SUCCESS: {注文番号}` が返ってきます。
+      operationId: createOrder
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - item_id
+                - quantity
+                - customer_name
+              properties:
+                item_id:
+                  type: integer
+                  example: 1
+                quantity:
+                  type: integer
+                  description: 注文数量（※マイナス値を入れると在庫が増える上に売上がマイナス計上されます）
+                  example: 2
+                customer_name:
+                  type: string
+                  example: "権田原 太郎"
+                postal_code:
+                  type: string
+                  example: "104-0045"
+                address:
+                  type: string
+                  example: "東京都中央区築地X-X-X"
+      responses:
+        '200':
+          description: 注文受付完了
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "SUCCESS: 10024"
+
+  /v1/coupons/verify:
+    post:
+      summary: クーポン・合言葉の有効性検証
+      description: |
+        店主が居酒屋で口走った「常連合言葉」またはクーポンコードの適用可否を判定します。
+      operationId: verifyCoupon
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: クーポンコード（大文字小文字のバリデーション不備あり）
+                  example: "HIMETSU_50"
+      responses:
+        '200':
+          description: 検証結果
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                    example: true
+                  discount_rate:
+                    type: number
+                    example: 0.5
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Gondawara-Key
+      description: |
+        【認証キー】
+        リクエストヘッダー `X-Gondawara-Key` にAPIトークンを付与してください。
+        （※コード側で `secret123` にハードコードされています）
+
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "特選 築地あさり佃煮（100g）"
+        price:
+          type: integer
+          example: 880
+        stock:
+          type: integer
+          example: 25
+        description:
+          type: string
+          example: "創業以来継ぎ足しの秘伝ダレでじっくり煮込んだ自慢の逸品。"
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "パラメータが不正です（適当なメッセージ）"
